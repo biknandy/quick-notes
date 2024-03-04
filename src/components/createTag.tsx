@@ -33,7 +33,6 @@ const CreateTag = () => {
           <Action.SubmitForm title="Create Tag" onSubmit={handleSubmit} />
         </ActionPanel>
       }
-      enableDrafts
     >
       <Form.Description text="New Tag" />
       <Form.TextField id="name" title="Name" />

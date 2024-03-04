@@ -1,9 +1,10 @@
-import { Form, ActionPanel, Action, showToast, useNavigation, Icon } from "@raycast/api";
+import { Form, ActionPanel, Action, showToast, useNavigation, Icon, Toast, popToRoot } from "@raycast/api";
 import { useAtom } from "jotai";
 import { notesAtom, tagsAtom } from "../services/atoms";
 import CreateTag from "./createTag";
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { colors } from "../utils/utils";
+import { debounce } from "lodash";
 
 type NoteForm = {
   title: string;
@@ -11,34 +12,79 @@ type NoteForm = {
   tags: string[];
 };
 
+const TIMEOUT = 1000;
+
 const CreateEditNoteForm = ({
   title,
   note,
   tags,
   createdAt,
-  editMode = false,
+  draftMode = false,
 }: {
-  editMode?: boolean;
   title?: string;
   note?: string;
   tags?: string[];
   createdAt?: Date;
+  draftMode?: boolean;
 }) => {
   const [notes, setNotes] = useAtom(notesAtom);
   const [tagStore, setTagStore] = useAtom(tagsAtom);
-  const [selectedTags, setSelectedTags] = useState<string[]>(tags ?? []);
+  const dataRef = useRef<NoteForm>({
+    title: title ?? "",
+    note: note ?? "",
+    tags: tags ?? [],
+  });
+  const [submittedForm, setSubmittedForm] = useState(false);
   const { pop } = useNavigation();
 
+  useEffect(() => {
+    return () => {
+      if ((/^\s*$/.test(dataRef.current.note) && !createdAt) || submittedForm) {
+        return;
+      }
+      // if editing or drafting, save note using existing createdAt to query
+      // we know the note exists if we are editing or drafting
+      if (createdAt) {
+        const updatedNotes = notes.map((n) => {
+          if (n.createdAt === createdAt) {
+            return {
+              ...n,
+              title: dataRef.current.title,
+              body: dataRef.current.note,
+              tags: dataRef.current.tags,
+              updatedAt: new Date(),
+            };
+          }
+          return n;
+        });
+        setNotes(updatedNotes);
+      } else {
+        setNotes([
+          ...notes,
+          {
+            title: dataRef.current.title,
+            body: dataRef.current.note,
+            tags: dataRef.current.tags,
+            is_draft: true,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          },
+        ]);
+      }
+    };
+  }, [createdAt, draftMode, submittedForm]);
+
   const handleSubmit = (values: NoteForm) => {
-    if (editMode) {
+    if (createdAt || draftMode) {
       const updatedNotes = notes.map((n) => {
         if (n.createdAt === createdAt) {
           return {
+            ...n,
             title: values.title,
             body: values.note,
-            createdAt: n.createdAt,
-            updatedAt: new Date(),
             tags: values.tags,
+            updatedAt: new Date(),
+            is_draft: false,
           };
         }
         return n;
@@ -50,9 +96,10 @@ const CreateEditNoteForm = ({
         {
           title: values.title,
           body: values.note,
-          createdAt: editMode && createdAt ? createdAt : new Date(),
-          updatedAt: new Date(),
           tags: values.tags,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          is_draft: false,
         },
       ]);
     }
@@ -64,7 +111,7 @@ const CreateEditNoteForm = ({
     <Form
       actions={
         <ActionPanel>
-          <Action.SubmitForm title={editMode ? "Edit Note" : "Create Note"} onSubmit={handleSubmit} />
+          <Action.SubmitForm title={createdAt && !draftMode ? "Edit Note" : "Create Note"} onSubmit={handleSubmit} />
           <Action.Push
             icon={Icon.Plus}
             target={<CreateTag />}
@@ -73,16 +120,43 @@ const CreateEditNoteForm = ({
           />
         </ActionPanel>
       }
-      enableDrafts
     >
-      <Form.Description text={editMode ? "Edit Note" : "Create New Note"} />
-      <Form.TextField id="title" title="Title" placeholder="Note Title" defaultValue={title} />
-      <Form.TextArea id="note" title="Note" placeholder="Enter Markdown" enableMarkdown defaultValue={note} />
+      <Form.Description text={createdAt && !draftMode ? "Edit Note" : "Create New Note"} />
+      <Form.TextField
+        id="title"
+        title="Title"
+        placeholder="Note Title"
+        defaultValue={title}
+        onChange={(newTitle) => {
+          dataRef.current = {
+            ...dataRef.current,
+            title: newTitle,
+          };
+        }}
+      />
+      <Form.TextArea
+        id="note"
+        title="Note"
+        placeholder="Enter Markdown"
+        enableMarkdown
+        defaultValue={note}
+        onChange={(newNote) => {
+          dataRef.current = {
+            ...dataRef.current,
+            note: newNote,
+          };
+        }}
+      />
       <Form.TagPicker
         id="tags"
         title="Tags"
-        value={selectedTags}
-        onChange={setSelectedTags}
+        defaultValue={tags}
+        onChange={(newTags) => {
+          dataRef.current = {
+            ...dataRef.current,
+            tags: newTags,
+          };
+        }}
         info="⌘ + T to create new tag"
       >
         {tagStore.map((t) => (

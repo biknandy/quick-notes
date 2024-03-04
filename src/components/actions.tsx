@@ -5,12 +5,14 @@ import { useEffect } from "react";
 
 const Actions = ({
   noNotes,
+  isDraft = false,
   title,
   note,
   tags,
   createdAt,
 }: {
   noNotes: boolean;
+  isDraft?: boolean;
   title?: string;
   note?: string;
   tags?: string[];
@@ -21,7 +23,9 @@ const Actions = ({
       {!noNotes && (
         <Action.Push
           title="Edit Note"
-          target={<CreateEditNoteForm editMode={true} title={title} note={note} tags={tags} createdAt={createdAt} />}
+          target={
+            <CreateEditNoteForm draftMode={isDraft} title={title} note={note} tags={tags} createdAt={createdAt} />
+          }
         />
       )}
       <Action.Push title="New Note" target={<CreateEditNoteForm />} shortcut={{ modifiers: ["cmd"], key: "n" }} />
