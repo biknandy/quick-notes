@@ -11,10 +11,6 @@ export default function Command() {
   const drafts = notes.filter((n) => n.is_draft);
   const published = notes.filter((n) => !n.is_draft);
 
-  useEffect(() => {
-    console.log(notes);
-  }, [notes]);
-
   return (
     <List isShowingDetail={notes.length > 0}>
       {published.length === 0 && drafts.length === 0 ? (

@@ -2,9 +2,9 @@ import { Form, ActionPanel, Action, showToast, useNavigation, Icon, Toast, popTo
 import { useAtom } from "jotai";
 import { notesAtom, tagsAtom } from "../services/atoms";
 import CreateTag from "./createTag";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { colors } from "../utils/utils";
-import { debounce } from "lodash";
+import { useForm } from "@raycast/utils";
 
 type NoteForm = {
   title: string;
@@ -12,106 +12,123 @@ type NoteForm = {
   tags: string[];
 };
 
-const TIMEOUT = 1000;
-
 const CreateEditNoteForm = ({
+  createdAt,
   title,
   note,
   tags,
-  createdAt,
-  draftMode = false,
+  isDraft = false,
 }: {
+  createdAt?: Date;
   title?: string;
   note?: string;
   tags?: string[];
-  createdAt?: Date;
-  draftMode?: boolean;
+  isDraft?: boolean;
 }) => {
   const [notes, setNotes] = useAtom(notesAtom);
   const [tagStore, setTagStore] = useAtom(tagsAtom);
-  const dataRef = useRef<NoteForm>({
+  const dataRef = useRef<NoteForm & { submittedForm: boolean }>({
     title: title ?? "",
     note: note ?? "",
     tags: tags ?? [],
+    submittedForm: false,
   });
-  const [submittedForm, setSubmittedForm] = useState(false);
   const { pop } = useNavigation();
 
-  useEffect(() => {
-    return () => {
-      if ((/^\s*$/.test(dataRef.current.note) && !createdAt) || submittedForm) {
-        return;
-      }
-      // if editing or drafting, save note using existing createdAt to query
-      // we know the note exists if we are editing or drafting
-      if (createdAt) {
-        const updatedNotes = notes.map((n) => {
-          if (n.createdAt === createdAt) {
-            return {
-              ...n,
-              title: dataRef.current.title,
-              body: dataRef.current.note,
-              tags: dataRef.current.tags,
-              updatedAt: new Date(),
-            };
-          }
-          return n;
-        });
+  const { handleSubmit, itemProps, values } = useForm<NoteForm>({
+    onSubmit(values) {
+      dataRef.current.submittedForm = true;
+      const foundNote = notes.find((n) => n.createdAt === createdAt);
+      if (foundNote) {
+        const updatedNotes = notes.map((n) =>
+          n.createdAt === createdAt
+            ? {
+                title: values.title,
+                body: values.note,
+                tags: values.tags,
+                createdAt: n.createdAt,
+                updatedAt: new Date(),
+                is_draft: false,
+              }
+            : n,
+        );
         setNotes(updatedNotes);
       } else {
         setNotes([
           ...notes,
           {
-            title: dataRef.current.title,
-            body: dataRef.current.note,
-            tags: dataRef.current.tags,
-            is_draft: true,
-            createdAt: new Date(),
-            updatedAt: new Date(),
-          },
-        ]);
-      }
-    };
-  }, [createdAt, draftMode, submittedForm]);
-
-  const handleSubmit = (values: NoteForm) => {
-    if (createdAt || draftMode) {
-      const updatedNotes = notes.map((n) => {
-        if (n.createdAt === createdAt) {
-          return {
-            ...n,
             title: values.title,
             body: values.note,
             tags: values.tags,
+            createdAt: new Date(),
             updatedAt: new Date(),
             is_draft: false,
-          };
+          },
+        ]);
+      }
+      showToast({ title: "Note Saved" });
+      pop();
+    },
+    initialValues: {
+      note,
+      title,
+      tags,
+    },
+  });
+
+  // Keeps the dataRef.current in sync with the form values
+  useEffect(() => {
+    dataRef.current = {
+      ...dataRef.current,
+      title: values.title,
+      note: values.note,
+      tags: values.tags,
+    };
+  }, [values]);
+
+  // This useEffect is a nice hack to autosave on unmount when the form is not explicitly submitted by the user
+  useEffect(() => {
+    const autoSave = () => {
+      if ((dataRef.current.note || dataRef.current.title) && !dataRef.current.submittedForm) {
+        const noteExists = notes.find((n) => n.createdAt === createdAt);
+        if (noteExists) {
+          const updatedNotes = notes.map((n) => {
+            if (n.createdAt === createdAt) {
+              return {
+                ...n,
+                title: dataRef.current.title ?? "",
+                body: dataRef.current.note ?? "",
+                tags: dataRef.current.tags ?? [],
+                updatedAt: new Date(),
+              };
+            }
+            return n;
+          });
+          setNotes(updatedNotes);
+        } else if (!noteExists) {
+          setNotes([
+            ...notes,
+            {
+              title: dataRef.current.title ?? "",
+              body: dataRef.current.note ?? "",
+              tags: dataRef.current.tags ?? [],
+              is_draft: isDraft,
+              createdAt: new Date(),
+              updatedAt: new Date(),
+            },
+          ]);
         }
-        return n;
-      });
-      setNotes(updatedNotes);
-    } else {
-      setNotes([
-        ...notes,
-        {
-          title: values.title,
-          body: values.note,
-          tags: values.tags,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-          is_draft: false,
-        },
-      ]);
-    }
-    showToast({ title: "Note Saved" });
-    pop();
-  };
+      }
+    };
+
+    return autoSave;
+  }, []);
 
   return (
     <Form
       actions={
         <ActionPanel>
-          <Action.SubmitForm title={createdAt && !draftMode ? "Edit Note" : "Create Note"} onSubmit={handleSubmit} />
+          <Action.SubmitForm title={createdAt && !isDraft ? "Edit Note" : "Create Note"} onSubmit={handleSubmit} />
           <Action.Push
             icon={Icon.Plus}
             target={<CreateTag />}
@@ -121,46 +138,13 @@ const CreateEditNoteForm = ({
         </ActionPanel>
       }
     >
-      <Form.Description text={createdAt && !draftMode ? "Edit Note" : "Create New Note"} />
-      <Form.TextField
-        id="title"
-        title="Title"
-        placeholder="Note Title"
-        defaultValue={title}
-        onChange={(newTitle) => {
-          dataRef.current = {
-            ...dataRef.current,
-            title: newTitle,
-          };
-        }}
-      />
-      <Form.TextArea
-        id="note"
-        title="Note"
-        placeholder="Enter Markdown"
-        enableMarkdown
-        defaultValue={note}
-        onChange={(newNote) => {
-          dataRef.current = {
-            ...dataRef.current,
-            note: newNote,
-          };
-        }}
-      />
-      <Form.TagPicker
-        id="tags"
-        title="Tags"
-        defaultValue={tags}
-        onChange={(newTags) => {
-          dataRef.current = {
-            ...dataRef.current,
-            tags: newTags,
-          };
-        }}
-        info="⌘ + T to create new tag"
-      >
-        {tagStore.map((t) => (
+      <Form.Description text={createdAt && !isDraft ? "Edit Note" : "Create New Note"} />
+      <Form.TextField title="Title" placeholder="Note Title" {...itemProps.title} />
+      <Form.TextArea title="Note" placeholder="Enter Markdown" enableMarkdown {...itemProps.note} />
+      <Form.TagPicker title="Tags" info="⌘ + T to create new tag" {...itemProps.tags}>
+        {tagStore.map((t, i) => (
           <Form.TagPicker.Item
+            key={i}
             value={t.name}
             title={t.name}
             icon={{ source: Icon.CircleFilled, tintColor: colors.find((c) => c.name === t.color)?.tintColor }}
