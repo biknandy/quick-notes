@@ -86,7 +86,7 @@ const CreateEditNoteForm = ({
     };
   }, [values]);
 
-  // This useEffect is a nice hack to autosave on unmount when the form is not explicitly submitted by the user
+  // This useEffect is a hack to autosave on unmount when the form is not explicitly submitted by the user
   useEffect(() => {
     const autoSave = () => {
       if ((dataRef.current.note || dataRef.current.title) && !dataRef.current.submittedForm) {
@@ -128,9 +128,19 @@ const CreateEditNoteForm = ({
     <Form
       actions={
         <ActionPanel>
-          <Action.SubmitForm title={createdAt && !isDraft ? "Edit Note" : "Create Note"} onSubmit={handleSubmit} />
+          <Action.SubmitForm
+            title={"Save Note"}
+            icon={{
+              source: Icon.SaveDocument,
+              tintColor: colors.find((c) => c.name === "green")?.tintColor,
+            }}
+            onSubmit={handleSubmit}
+          />
           <Action.Push
-            icon={Icon.Plus}
+            icon={{
+              source: Icon.Bookmark,
+              tintColor: colors.find((c) => c.name === "amber")?.tintColor,
+            }}
             target={<CreateTag />}
             title="Create Tag"
             shortcut={{ modifiers: ["cmd"], key: "t" }}
