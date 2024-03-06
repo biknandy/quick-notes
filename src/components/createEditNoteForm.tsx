@@ -89,16 +89,19 @@ const CreateEditNoteForm = ({
   // This useEffect is a hack to autosave on unmount when the form is not explicitly submitted by the user
   useEffect(() => {
     const autoSave = () => {
-      if ((dataRef.current.note || dataRef.current.title) && !dataRef.current.submittedForm) {
+      const noteField = dataRef.current.note;
+      const titleField = dataRef.current.title;
+      const tagsField = dataRef.current.tags;
+      if ((noteField || titleField) && !dataRef.current.submittedForm && (noteField !== note || titleField !== title)) {
         const noteExists = notes.find((n) => n.createdAt === createdAt);
         if (noteExists) {
           const updatedNotes = notes.map((n) => {
             if (n.createdAt === createdAt) {
               return {
                 ...n,
-                title: dataRef.current.title ?? "",
-                body: dataRef.current.note ?? "",
-                tags: dataRef.current.tags ?? [],
+                title: titleField ?? "",
+                body: noteField ?? "",
+                tags: tagsField ?? [],
                 updatedAt: new Date(),
               };
             }
@@ -109,9 +112,9 @@ const CreateEditNoteForm = ({
           setNotes([
             ...notes,
             {
-              title: dataRef.current.title ?? "",
-              body: dataRef.current.note ?? "",
-              tags: dataRef.current.tags ?? [],
+              title: titleField ?? "",
+              body: noteField ?? "",
+              tags: tagsField ?? [],
               is_draft: isDraft,
               createdAt: new Date(),
               updatedAt: new Date(),
