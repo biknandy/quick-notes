@@ -1,11 +1,14 @@
-import { ActionPanel, Action, Icon } from "@raycast/api";
+import { ActionPanel, Action, Icon, Color } from "@raycast/api";
 import CreateEditNoteForm from "./createEditNoteForm";
 import CreateTag from "./createTag";
 import DeleteNoteAction from "./deleteNoteAction";
 import { colors } from "../utils/utils";
+import { tagsAtom } from "../services/atoms";
+import { useAtom } from "jotai";
 
 const Actions = ({
   noNotes,
+  onTagFilter,
   isDraft = false,
   title,
   note,
@@ -13,12 +16,14 @@ const Actions = ({
   createdAt,
 }: {
   noNotes: boolean;
+  onTagFilter: (tag: string) => void;
   isDraft?: boolean;
   title?: string;
   note?: string;
   tags?: string[];
   createdAt?: Date;
 }) => {
+  const [allTags, _] = useAtom(tagsAtom);
   return (
     <ActionPanel>
       <ActionPanel.Section>
@@ -48,6 +53,31 @@ const Actions = ({
           target={<CreateEditNoteForm isDraft={true} />}
           shortcut={{ modifiers: ["cmd"], key: "n" }}
         />
+        <ActionPanel.Submenu
+          title="Filter Tag"
+          icon={{
+            source: Icon.Filter,
+            tintColor: Color.PrimaryText,
+          }}
+          shortcut={{ modifiers: ["cmd", "shift"], key: "t" }}
+        >
+          {allTags &&
+            allTags.length > 0 &&
+            allTags.map((tag, i) => (
+              <Action
+                key={i}
+                icon={{
+                  source: Icon.CircleFilled,
+                  tintColor: tag.color,
+                }}
+                title={tag.name}
+                onAction={() => {
+                  onTagFilter(tag.name);
+                }}
+              />
+            ))}
+          <Action.Push title="Create" icon={Icon.Plus} target={<CreateTag />} />
+        </ActionPanel.Submenu>
         <Action.Push
           title="New Tag"
           icon={{

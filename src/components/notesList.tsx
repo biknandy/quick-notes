@@ -9,6 +9,7 @@ import Actions from "./actions";
 const NotesList = () => {
   const [notes] = useAtom(notesAtom);
 
+  const [searchText, setSearchText] = useState("");
   const [filteredNotes, setFilteredNotes] = useState<Note[]>([]);
 
   useEffect(() => {
@@ -19,6 +20,7 @@ const NotesList = () => {
   const published = filteredNotes.filter((n) => !n.is_draft);
 
   const filterList = (searchText: string) => {
+    setSearchText(searchText);
     const normalizedSearchString = searchText.trim().toLowerCase();
     const filtered = notes.filter((obj) =>
       Object.values(obj).some((value) =>
@@ -31,9 +33,9 @@ const NotesList = () => {
   };
 
   return (
-    <List filtering={false} isShowingDetail={notes.length > 0} onSearchTextChange={filterList}>
+    <List filtering={false} isShowingDetail={notes.length > 0} onSearchTextChange={filterList} searchText={searchText}>
       {published.length === 0 && drafts.length === 0 ? (
-        <List.EmptyView title="⌘ + N to create a new note." actions={<Actions noNotes />} />
+        <List.EmptyView title="⌘ + N to create a new note." actions={<Actions noNotes onTagFilter={filterList} />} />
       ) : (
         <>
           {drafts.length > 0 && (
@@ -51,6 +53,7 @@ const NotesList = () => {
                       note={note.body}
                       tags={note.tags}
                       createdAt={note.createdAt}
+                      onTagFilter={filterList}
                     />
                   }
                   accessories={[
@@ -77,6 +80,7 @@ const NotesList = () => {
                     note={note.body}
                     tags={note.tags}
                     createdAt={note.createdAt}
+                    onTagFilter={filterList}
                   />
                 }
                 accessories={[
