@@ -42,7 +42,7 @@ const CreateTag = () => {
             key={i}
             value={color.name}
             title={color.name}
-            icon={{ source: Icon.CircleFilled, tintColor: color.tintColor }}
+            icon={{ source: "dot.png", tintColor: color.tintColor }}
           />
         ))}
       </Form.Dropdown>
@@ -54,7 +54,7 @@ const CreateTag = () => {
             key={i}
             value={t.name}
             title={t.name}
-            icon={{ source: Icon.CircleFilled, tintColor: colors.find((c) => c.name === t.color)?.tintColor }}
+            icon={{ source: "dot.png", tintColor: colors.find((c) => c.name === t.color)?.tintColor }}
           />
         ))}
       </Form.Dropdown>

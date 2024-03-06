@@ -67,7 +67,7 @@ const Actions = ({
               <Action
                 key={i}
                 icon={{
-                  source: Icon.CircleFilled,
+                  source: "dot.png",
                   tintColor: tag.color,
                 }}
                 title={tag.name}

@@ -160,7 +160,7 @@ const CreateEditNoteForm = ({
             key={i}
             value={t.name}
             title={t.name}
-            icon={{ source: Icon.CircleFilled, tintColor: colors.find((c) => c.name === t.color)?.tintColor }}
+            icon={{ source: "dot.png", tintColor: colors.find((c) => c.name === t.color)?.tintColor }}
           />
         ))}
       </Form.TagPicker>
