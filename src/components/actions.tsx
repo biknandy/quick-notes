@@ -48,7 +48,7 @@ const Actions = ({
           title="New Note"
           icon={{
             source: Icon.BlankDocument,
-            tintColor: colors.find((c) => c.name === "turquoise")?.tintColor,
+            tintColor: colors.find((c) => c.name === "green")?.tintColor,
           }}
           target={<CreateEditNoteForm isDraft={true} />}
           shortcut={{ modifiers: ["cmd"], key: "n" }}
@@ -57,9 +57,9 @@ const Actions = ({
           title="Filter Tag"
           icon={{
             source: Icon.Filter,
-            tintColor: Color.PrimaryText,
+            tintColor: colors.find((c) => c.name === "turquoise")?.tintColor,
           }}
-          shortcut={{ modifiers: ["cmd", "shift"], key: "t" }}
+          shortcut={{ modifiers: ["cmd"], key: "t" }}
         >
           {allTags &&
             allTags.length > 0 &&
@@ -81,11 +81,11 @@ const Actions = ({
         <Action.Push
           title="New Tag"
           icon={{
-            source: Icon.Bookmark,
-            tintColor: colors.find((c) => c.name === "amber")?.tintColor,
+            source: Icon.Tag,
+            tintColor: colors.find((c) => c.name === "turquoise")?.tintColor,
           }}
           target={<CreateTag />}
-          shortcut={{ modifiers: ["cmd"], key: "t" }}
+          shortcut={{ modifiers: ["cmd", "shift"], key: "t" }}
         />
       </ActionPanel.Section>
     </ActionPanel>

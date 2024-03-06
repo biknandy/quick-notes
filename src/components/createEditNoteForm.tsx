@@ -141,8 +141,8 @@ const CreateEditNoteForm = ({
           />
           <Action.Push
             icon={{
-              source: Icon.Bookmark,
-              tintColor: colors.find((c) => c.name === "amber")?.tintColor,
+              source: Icon.Tag,
+              tintColor: colors.find((c) => c.name === "turquoise")?.tintColor,
             }}
             target={<CreateTag />}
             title="Create Tag"
