@@ -2,9 +2,9 @@ import { Form, ActionPanel, Action, showToast, useNavigation, Icon, Toast, popTo
 import { useAtom } from "jotai";
 import { notesAtom, tagsAtom } from "../services/atoms";
 import CreateTag from "./createTag";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { colors } from "../utils/utils";
-import { useForm } from "@raycast/utils";
+import { FormValidation, useForm } from "@raycast/utils";
 
 type NoteForm = {
   title: string;
@@ -74,6 +74,15 @@ const CreateEditNoteForm = ({
       title,
       tags,
     },
+    validation: {
+      title: (value) => {
+        if (!value) {
+          return "Title is required";
+        } else if (value.length > 100) {
+          return "Title < 100 chars";
+        }
+      },
+    },
   });
 
   // Keeps the dataRef.current in sync with the form values
@@ -92,6 +101,9 @@ const CreateEditNoteForm = ({
       const noteField = dataRef.current.note;
       const titleField = dataRef.current.title;
       const tagsField = dataRef.current.tags;
+      if (titleField.length > 100) {
+        return;
+      }
       if ((noteField || titleField) && !dataRef.current.submittedForm && (noteField !== note || titleField !== title)) {
         const noteExists = notes.find((n) => n.createdAt === createdAt);
         if (noteExists) {
