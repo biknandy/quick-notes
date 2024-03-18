@@ -17,6 +17,21 @@
       "mode": "view"
     }
   ],
+  "keywords": [
+    "notes",
+    "markdown",
+    "quick"
+  ],
+  "preferences": [
+    {
+      "name": "fileLocation",
+      "title": "Notes File Location",
+      "description": "Set where to save markdown files",
+      "type": "directory",
+      "required": true,
+      "label": "File Location"
+    }
+  ],
   "dependencies": {
     "@raycast/api": "^1.68.1",
     "@raycast/utils": "^1.12.5",

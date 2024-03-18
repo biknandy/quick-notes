@@ -4,7 +4,7 @@ import { notesAtom, tagsAtom } from "../services/atoms";
 import CreateTag from "./createTag";
 import { useEffect, useRef, useState } from "react";
 import { colors } from "../utils/utils";
-import { FormValidation, useForm } from "@raycast/utils";
+import { useForm } from "@raycast/utils";
 
 type NoteForm = {
   title: string;
@@ -101,9 +101,12 @@ const CreateEditNoteForm = ({
       const noteField = dataRef.current.note;
       const titleField = dataRef.current.title;
       const tagsField = dataRef.current.tags;
+
+      // Don't autosave if form errors
       if (titleField.length > 100) {
         return;
       }
+
       if ((noteField || titleField) && !dataRef.current.submittedForm && (noteField !== note || titleField !== title)) {
         const noteExists = notes.find((n) => n.createdAt === createdAt);
         if (noteExists) {
