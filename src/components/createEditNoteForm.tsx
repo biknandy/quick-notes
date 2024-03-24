@@ -1,4 +1,4 @@
-import { Form, ActionPanel, Action, showToast, useNavigation, Icon, Toast, popToRoot } from "@raycast/api";
+import { Form, ActionPanel, Action, showToast, useNavigation, Icon, popToRoot } from "@raycast/api";
 import { useAtom } from "jotai";
 import { notesAtom, tagsAtom } from "../services/atoms";
 import CreateTag from "./createTag";

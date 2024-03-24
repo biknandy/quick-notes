@@ -1,4 +1,4 @@
-import { Form, ActionPanel, Action, showToast, useNavigation, Icon, Color } from "@raycast/api";
+import { Form, ActionPanel, Action, showToast, useNavigation, Color } from "@raycast/api";
 import { useAtom } from "jotai";
 import { tagsAtom } from "../services/atoms";
 import { colors, getRandomColor } from "../utils/utils";

@@ -1,8 +1,7 @@
-import { Form, ActionPanel, Action, showToast, useNavigation, Icon, Color } from "@raycast/api";
+import { Form, ActionPanel, Action, showToast, useNavigation } from "@raycast/api";
 import { useAtom } from "jotai";
-import { Tag, tagsAtom } from "../services/atoms";
-import { colors, getRandomColor } from "../utils/utils";
-import { useState } from "react";
+import { tagsAtom } from "../services/atoms";
+import { colors } from "../utils/utils";
 
 const DeleteTags = () => {
   const [tags, setTags] = useAtom(tagsAtom);

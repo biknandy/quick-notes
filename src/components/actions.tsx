@@ -1,4 +1,4 @@
-import { ActionPanel, Action, Icon, Color } from "@raycast/api";
+import { ActionPanel, Action, Icon } from "@raycast/api";
 import CreateEditNoteForm from "./createEditNoteForm";
 import CreateTag from "./createTag";
 import DeleteNoteAction from "./deleteNoteAction";
