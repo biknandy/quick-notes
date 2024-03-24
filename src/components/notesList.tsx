@@ -2,15 +2,14 @@ import { List } from "@raycast/api";
 import { useEffect, useState } from "react";
 import { useAtom } from "jotai";
 import { format } from "date-fns";
-import { some } from "lodash";
-import { notesAtom, tagsAtom, Note } from "../services/atoms";
+import { notesAtom, Note } from "../services/atoms";
 import Actions from "./actions";
 
 const NotesList = () => {
   const [notes] = useAtom(notesAtom);
 
   const [searchText, setSearchText] = useState("");
-  const [filteredNotes, setFilteredNotes] = useState<Note[]>([]);
+  const [filteredNotes, setFilteredNotes] = useState<Note[]>(notes);
 
   useEffect(() => {
     setFilteredNotes(notes);

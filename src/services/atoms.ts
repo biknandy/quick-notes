@@ -1,4 +1,4 @@
-import { atom } from "jotai";
+import { atom, useAtom } from "jotai";
 import { TAGS_FILE_PATH, TODO_FILE_PATH, preferences } from "./config";
 import fs from "fs";
 import { compareDesc } from "date-fns";
