@@ -3,7 +3,7 @@
   "name": "quick-notes",
   "title": "Quick Notes",
   "description": "Create simple markdown notes in Raycast locally. No integrations required!",
-  "icon": "command-icon.png",
+  "icon": "icon.png",
   "author": "bik",
   "categories": [
     "Productivity"
@@ -36,6 +36,23 @@
       "type": "directory",
       "required": false,
       "label": "File Location"
+    },
+    {
+      "name": "sort",
+      "title": "Sort Notes By",
+      "description": "Sort notes by created or updated",
+      "type": "dropdown",
+      "required": false,
+      "data": [
+        {
+          "title": "Time Updated",
+          "value": "updated"
+        },
+        {
+          "title": "Time Created",
+          "value": "created"
+        }
+      ]
     }
   ],
   "dependencies": {

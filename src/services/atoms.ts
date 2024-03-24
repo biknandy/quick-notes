@@ -28,7 +28,12 @@ const notes = atom<Note[]>(getInitialValuesFromFile(TODO_FILE_PATH) as Note[]);
 export const notesAtom = atom(
   (get) => {
     const notesQ = get(notes);
-    return notesQ.sort((a, b) => compareDesc(a.createdAt, b.createdAt));
+    return notesQ.sort((a, b) => {
+      if (preferences.sort === "updated") {
+        return compareDesc(a.updatedAt, b.updatedAt);
+      }
+      return compareDesc(a.createdAt, b.createdAt);
+    });
   },
   async (get, set, newNotes: Note[]) => {
     /**
