@@ -21,9 +21,10 @@ const DeleteNoteAction = ({ createdAt }: { createdAt?: Date }) => {
         },
       },
     };
-    await confirmAlert(alertOptions);
-    const updatedNotes = notes.filter((n) => n.createdAt !== createdAt);
-    setNotes(updatedNotes);
+    if (await confirmAlert(alertOptions)) {
+      const updatedNotes = notes.filter((n) => n.createdAt !== createdAt);
+      setNotes(updatedNotes);
+    }
   };
 
   if (!createdAt) return null;

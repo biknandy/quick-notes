@@ -36,6 +36,7 @@ const ExportForm = () => {
         </ActionPanel>
       }
     >
+      {notes.length === 0 && <Form.Description text="No notes to export. Create a new note before exporting." />}
       <Form.FilePicker
         id="folders"
         title="Choose Export Folder"

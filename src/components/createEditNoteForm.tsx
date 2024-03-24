@@ -144,6 +144,7 @@ const CreateEditNoteForm = ({
 
   return (
     <Form
+      navigationTitle="Create Note"
       actions={
         <ActionPanel>
           <Action.SubmitForm
