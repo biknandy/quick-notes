@@ -5,7 +5,7 @@ import { useAtom } from "jotai";
 import { notesAtom } from "../services/atoms";
 
 const ExportForm = () => {
-  const [notes, _] = useAtom(notesAtom);
+  const [notes] = useAtom(notesAtom);
   const { pop } = useNavigation();
 
   return (

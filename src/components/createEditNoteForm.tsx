@@ -1,8 +1,8 @@
-import { Form, ActionPanel, Action, showToast, useNavigation, Icon, popToRoot } from "@raycast/api";
+import { Form, ActionPanel, Action, showToast, useNavigation, Icon } from "@raycast/api";
 import { useAtom } from "jotai";
 import { notesAtom, tagsAtom } from "../services/atoms";
 import CreateTag from "./createTag";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { colors } from "../utils/utils";
 import { useForm } from "@raycast/utils";
 
@@ -26,7 +26,7 @@ const CreateEditNoteForm = ({
   isDraft?: boolean;
 }) => {
   const [notes, setNotes] = useAtom(notesAtom);
-  const [tagStore, setTagStore] = useAtom(tagsAtom);
+  const [tagStore] = useAtom(tagsAtom);
   const dataRef = useRef<NoteForm & { submittedForm: boolean }>({
     title: title ?? "",
     note: note ?? "",

@@ -24,7 +24,7 @@ const Actions = ({
   tags?: string[];
   createdAt?: Date;
 }) => {
-  const [allTags, _] = useAtom(tagsAtom);
+  const [allTags] = useAtom(tagsAtom);
   return (
     <ActionPanel>
       <ActionPanel.Section>
@@ -40,7 +40,7 @@ const Actions = ({
                 <CreateEditNoteForm isDraft={isDraft} title={title} note={note} tags={tags} createdAt={createdAt} />
               }
             />
-            <DeleteNoteAction title={title ?? ""} createdAt={createdAt} />
+            <DeleteNoteAction createdAt={createdAt} />
           </>
         )}
       </ActionPanel.Section>

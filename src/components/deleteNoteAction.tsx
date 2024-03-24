@@ -3,7 +3,7 @@ import { useAtom } from "jotai";
 import { notesAtom } from "../services/atoms";
 import { colors } from "../utils/utils";
 
-const DeleteNoteAction = ({ title, createdAt }: { title?: string; createdAt?: Date }) => {
+const DeleteNoteAction = ({ createdAt }: { createdAt?: Date }) => {
   const [notes, setNotes] = useAtom(notesAtom);
   const deleteNote = async () => {
     const alertOptions = {
