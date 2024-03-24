@@ -2,7 +2,7 @@
   "$schema": "https://www.raycast.com/schemas/extension.json",
   "name": "quick-notes",
   "title": "Quick Notes",
-  "description": "Create simple markdown notes in Raycast locally.",
+  "description": "Create simple markdown notes in Raycast locally. No integrations required!",
   "icon": "icon.png",
   "author": "bik",
   "categories": [
@@ -14,7 +14,7 @@
     {
       "name": "index",
       "title": "View Notes",
-      "description": "Manage and view your quick notes.",
+      "description": "Create, view, and manage your quick notes.",
       "mode": "view"
     },
     {
