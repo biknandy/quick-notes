@@ -1,8 +1,14 @@
-import { SetStateAction, atom } from "jotai";
-import { TAGS_FILE_PATH, TODO_FILE_PATH } from "./config";
+import { atom } from "jotai";
+import { TAGS_FILE_PATH, TODO_FILE_PATH, preferences } from "./config";
 import fs from "fs";
-import { environment } from "@raycast/api";
 import { compareDesc } from "date-fns";
+import {
+  deleteNotesInFolder,
+  exportNotes,
+  getDeletedNote,
+  getInitialValuesFromFile,
+  getOldRenamedTitles,
+} from "../utils/utils";
 
 export interface Note {
   title: string;
@@ -18,33 +24,39 @@ export interface Tag {
   color: string;
 }
 
-const getInitialValuesFromFile = (filepath: string): [] => {
-  try {
-    // Check if the file exists
-    if (fs.existsSync(filepath)) {
-      const storedItemsBuffer = fs.readFileSync(filepath);
-      return JSON.parse(storedItemsBuffer.toString());
-    } else {
-      fs.mkdirSync(environment.supportPath, { recursive: true });
-      return []; // Return empty array if file doesn't exist
-    }
-  } catch (error) {
-    fs.mkdirSync(environment.supportPath, { recursive: true });
-    return [];
-  }
-};
-
 const notes = atom<Note[]>(getInitialValuesFromFile(TODO_FILE_PATH) as Note[]);
 export const notesAtom = atom(
   (get) => {
     const notesQ = get(notes);
     return notesQ.sort((a, b) => compareDesc(a.createdAt, b.createdAt));
   },
-  (get, set, newNotes: Note[]) => {
+  async (get, set, newNotes: Note[]) => {
+    /**
+     * Autosave deletion logic
+     * - If a note is renamed, delete the old note file as title is the filename
+     * - If a note is deleted, delete the note file
+     */
+    if (preferences.fileLocation) {
+      const differentTitles = getOldRenamedTitles(get(notes), newNotes);
+      if (differentTitles.length > 0) {
+        await deleteNotesInFolder(preferences.fileLocation, differentTitles);
+      }
+      const deletedNote = getDeletedNote(get(notes), newNotes);
+      if (deletedNote) {
+        await deleteNotesInFolder(preferences.fileLocation, [deletedNote.title]);
+      }
+    }
+
+    // Update the notes
     set(notes, newNotes);
 
-    // Write updated notes to the file
+    // Write notes to JSON data
     fs.writeFileSync(TODO_FILE_PATH, JSON.stringify(newNotes, null, 2));
+
+    // Write notes to file system if autosave is enabled
+    if (preferences.fileLocation) {
+      await exportNotes(preferences.fileLocation, newNotes);
+    }
   },
 );
 

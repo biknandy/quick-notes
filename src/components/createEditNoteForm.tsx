@@ -103,7 +103,7 @@ const CreateEditNoteForm = ({
       const tagsField = dataRef.current.tags;
 
       // Don't autosave if form errors
-      if (titleField.length > 100) {
+      if (!titleField || titleField.length > 100) {
         return;
       }
 
