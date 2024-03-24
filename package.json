@@ -52,6 +52,10 @@
         {
           "title": "Time Created",
           "value": "created"
+        },
+        {
+          "title": "Alphabetical",
+          "value": "alphabetical"
         }
       ],
       "defaultValue": "updated"

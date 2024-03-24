@@ -33,6 +33,8 @@ export const notesAtom = atom(
     return notesQ.sort((a, b) => {
       if (preferences.sort === "created") {
         return compareDesc(a.createdAt, b.createdAt);
+      } else if (preferences.sort === "alphabetical") {
+        return a.title.localeCompare(b.title);
       }
       return compareDesc(a.updatedAt, b.updatedAt);
     });
