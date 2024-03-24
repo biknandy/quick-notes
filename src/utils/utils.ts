@@ -74,13 +74,7 @@ export const getDeletedNote = (oldNotes: Note[], newNotes: Note[]): Note | null 
   if (oldNotes.length === 0 || oldNotes.length !== newNotes.length + 1) {
     return null;
   }
-  for (const element of oldNotes) {
-    if (!newNotes.includes(element)) {
-      return element;
-    }
-  }
-
-  return null;
+  return oldNotes.find((note) => !newNotes.includes(note)) || null;
 };
 
 export const colors = [
