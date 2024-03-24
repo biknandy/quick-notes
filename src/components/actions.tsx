@@ -5,6 +5,7 @@ import DeleteNoteAction from "./deleteNoteAction";
 import { colors } from "../utils/utils";
 import { tagsAtom } from "../services/atoms";
 import { useAtom } from "jotai";
+import DeleteTags from "./deleteTags";
 
 const Actions = ({
   noNotes,
@@ -86,6 +87,15 @@ const Actions = ({
           }}
           target={<CreateTag />}
           shortcut={{ modifiers: ["cmd", "shift"], key: "t" }}
+        />
+        <Action.Push
+          title="Delete Tags"
+          icon={{
+            source: Icon.Trash,
+            tintColor: colors.find((c) => c.name === "red")?.tintColor,
+          }}
+          target={<DeleteTags />}
+          shortcut={{ modifiers: ["ctrl", "shift"], key: "t" }}
         />
       </ActionPanel.Section>
     </ActionPanel>
