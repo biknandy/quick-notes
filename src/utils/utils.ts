@@ -21,7 +21,7 @@ export const getInitialValuesFromFile = (filepath: string): [] => {
 
 export const exportNotes = async (filePath: string, notes: Note[]) => {
   if (!fs.existsSync(filePath) || !fs.lstatSync(filePath).isDirectory()) {
-    showToast({ title: "Invalid directory path" });
+    showToast({ title: "Invalid Folder" });
     return;
   }
 
@@ -39,7 +39,7 @@ export const exportNotes = async (filePath: string, notes: Note[]) => {
 
 export const deleteNotesInFolder = (dirPath: string, filenames: string[]): Promise<void> => {
   if (!fs.existsSync(dirPath) || !fs.lstatSync(dirPath).isDirectory()) {
-    return Promise.reject(`Invalid directory path: ${dirPath}`);
+    return Promise.reject(`Invalid Folder: ${dirPath}`);
   }
   return new Promise<void>((resolve, reject) => {
     const deletionPromises = filenames.map((file) => {

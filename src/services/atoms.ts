@@ -1,4 +1,4 @@
-import { atom, useAtom } from "jotai";
+import { atom } from "jotai";
 import { TAGS_FILE_PATH, TODO_FILE_PATH, preferences } from "./config";
 import fs from "fs";
 import { compareDesc } from "date-fns";
@@ -28,11 +28,13 @@ const notes = atom<Note[]>(getInitialValuesFromFile(TODO_FILE_PATH) as Note[]);
 export const notesAtom = atom(
   (get) => {
     const notesQ = get(notes);
+
+    // Sort based on user preference
     return notesQ.sort((a, b) => {
-      if (preferences.sort === "updated") {
-        return compareDesc(a.updatedAt, b.updatedAt);
+      if (preferences.sort === "created") {
+        return compareDesc(a.createdAt, b.createdAt);
       }
-      return compareDesc(a.createdAt, b.createdAt);
+      return compareDesc(a.updatedAt, b.updatedAt);
     });
   },
   async (get, set, newNotes: Note[]) => {

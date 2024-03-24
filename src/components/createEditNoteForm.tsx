@@ -95,7 +95,7 @@ const CreateEditNoteForm = ({
     };
   }, [values]);
 
-  // This useEffect is a hack to autosave on unmount when the form is not explicitly submitted by the user
+  // This useEffect is a hack to autosave a draft on unmount when the form is not explicitly submitted by the user
   useEffect(() => {
     const autoSave = () => {
       const noteField = dataRef.current.note;

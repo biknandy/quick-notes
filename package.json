@@ -2,11 +2,12 @@
   "$schema": "https://www.raycast.com/schemas/extension.json",
   "name": "quick-notes",
   "title": "Quick Notes",
-  "description": "Create simple markdown notes in Raycast locally. No integrations required!",
+  "description": "Create simple markdown notes in Raycast locally.",
   "icon": "icon.png",
   "author": "bik",
   "categories": [
-    "Productivity"
+    "Productivity",
+    "Developer Tools"
   ],
   "license": "MIT",
   "commands": [
@@ -52,7 +53,8 @@
           "title": "Time Created",
           "value": "created"
         }
-      ]
+      ],
+      "defaultValue": "updated"
     }
   ],
   "dependencies": {

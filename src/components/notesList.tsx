@@ -18,6 +18,7 @@ const NotesList = () => {
   const drafts = filteredNotes.filter((n) => n.is_draft);
   const published = filteredNotes.filter((n) => !n.is_draft);
 
+  // Custom search
   const filterList = (searchText: string) => {
     setSearchText(searchText);
     const normalizedSearchString = searchText.trim().toLowerCase();
