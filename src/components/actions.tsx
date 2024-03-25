@@ -69,7 +69,7 @@ const Actions = ({
                 key={i}
                 icon={{
                   source: "dot.png",
-                  tintColor: tag.color,
+                  tintColor: colors.find((c) => c.name === tag.color)?.tintColor ?? "blue",
                 }}
                 title={tag.name}
                 onAction={() => {

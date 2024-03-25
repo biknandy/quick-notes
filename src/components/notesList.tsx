@@ -33,7 +33,13 @@ const NotesList = () => {
   };
 
   return (
-    <List filtering={false} isShowingDetail={notes.length > 0} onSearchTextChange={filterList} searchText={searchText}>
+    <List
+      searchBarPlaceholder="Search for a Note"
+      filtering={false}
+      isShowingDetail={notes.length > 0}
+      onSearchTextChange={filterList}
+      searchText={searchText}
+    >
       {published.length === 0 && drafts.length === 0 ? (
         <List.EmptyView title="⌘ + N to create a new note." actions={<Actions noNotes onTagFilter={filterList} />} />
       ) : (

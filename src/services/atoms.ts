@@ -48,11 +48,19 @@ export const notesAtom = atom(
     if (preferences.fileLocation) {
       const differentTitles = getOldRenamedTitles(get(notes), newNotes);
       if (differentTitles.length > 0) {
-        await deleteNotesInFolder(preferences.fileLocation, differentTitles);
+        try {
+          await deleteNotesInFolder(preferences.fileLocation, differentTitles);
+        } catch (e) {
+          console.error(`Error deleting note: ${e}`);
+        }
       }
       const deletedNote = getDeletedNote(get(notes), newNotes);
       if (deletedNote) {
-        await deleteNotesInFolder(preferences.fileLocation, [deletedNote.title]);
+        try {
+          await deleteNotesInFolder(preferences.fileLocation, [deletedNote.title]);
+        } catch (e) {
+          console.error(`Error deleting note: ${e}`);
+        }
       }
     }
 

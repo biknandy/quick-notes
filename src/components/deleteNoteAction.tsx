@@ -13,17 +13,16 @@ const DeleteNoteAction = ({ createdAt }: { createdAt?: Date }) => {
       primaryAction: {
         title: "Confirm",
         style: Alert.ActionStyle.Destructive,
-        onAction: () => {
-          showToast({
-            style: Toast.Style.Success,
-            title: "Deleted Note",
-          });
-        },
       },
     };
+
     if (await confirmAlert(alertOptions)) {
       const updatedNotes = notes.filter((n) => n.createdAt !== createdAt);
-      setNotes(updatedNotes);
+      await setNotes(updatedNotes);
+      showToast({
+        style: Toast.Style.Success,
+        title: "Deleted Note",
+      });
     }
   };
 

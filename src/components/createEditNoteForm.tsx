@@ -36,7 +36,7 @@ const CreateEditNoteForm = ({
   const { pop } = useNavigation();
 
   const { handleSubmit, itemProps, values } = useForm<NoteForm>({
-    onSubmit(values) {
+    async onSubmit(values) {
       dataRef.current.submittedForm = true;
       const foundNote = notes.find((n) => n.createdAt === createdAt);
       if (foundNote) {
@@ -52,9 +52,9 @@ const CreateEditNoteForm = ({
               }
             : n,
         );
-        setNotes(updatedNotes);
+        await setNotes(updatedNotes);
       } else {
-        setNotes([
+        await setNotes([
           ...notes,
           {
             title: values.title,
@@ -144,7 +144,7 @@ const CreateEditNoteForm = ({
 
   return (
     <Form
-      navigationTitle="Create Note"
+      navigationTitle={createdAt && !isDraft ? "Edit Note" : "Create Note"}
       actions={
         <ActionPanel>
           <Action.SubmitForm

@@ -29,6 +29,7 @@ const CreateTag = () => {
 
   return (
     <Form
+      navigationTitle="Create Tag"
       actions={
         <ActionPanel>
           <Action.SubmitForm title="Create Tag" onSubmit={handleSubmit} />
@@ -49,7 +50,7 @@ const CreateTag = () => {
       </Form.Dropdown>
       <Form.Separator />
       <Form.Description text="Existing Tags" />
-      <Form.Dropdown id="tags" info="For referencing existing tags only" defaultValue="Select Tag">
+      <Form.Dropdown id="tags" info="For referencing existing tags only">
         {tags.map((t, i) => (
           <Form.Dropdown.Item
             key={i}

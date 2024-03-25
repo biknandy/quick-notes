@@ -15,6 +15,7 @@ const DeleteTags = () => {
 
   return (
     <Form
+      navigationTitle="Delete Tags"
       actions={
         <ActionPanel>
           <Action.SubmitForm title="Update Tags" onSubmit={(tagValues) => handleSubmit(tagValues.tags)} />

@@ -5,6 +5,8 @@ Create simple markdown notes in Raycast stored locally. No integrations required
 ## Features
 
 - View, create, and delete markdown notes
+- Search by note title, body, or tag
+- Draft auto-save if you accidentally exit out while creating a new note
 - Export notes to a directory to use in another application
 - Auto-save to a directory of your choice, set in preferences
 - Tag manager
