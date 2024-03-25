@@ -3,6 +3,7 @@ import { useAtom } from "jotai";
 import { tagsAtom } from "../services/atoms";
 import { colors, getRandomColor } from "../utils/utils";
 import { useState } from "react";
+import { useForm } from "@raycast/utils";
 
 type TagForm = {
   name: string;
@@ -14,18 +15,28 @@ const CreateTag = () => {
   const { pop } = useNavigation();
   const [color, setColor] = useState(getRandomColor().name);
 
-  // Creates a new tag
-  const handleSubmit = (values: TagForm) => {
-    // if tag already exists, don't do anything
-    if (tags.find((tag) => tag.name === values.name)) {
-      showToast({ title: "Tag Exists" });
+  const { handleSubmit, itemProps, values } = useForm<TagForm>({
+    async onSubmit(values) {
+      // if tag already exists, don't do anything
+      if (tags.find((tag) => tag.name === values.name)) {
+        showToast({ title: "Tag Exists" });
+        pop();
+        return;
+      }
+      setTag([...tags, { name: values.name, color }]);
+      showToast({ title: "Tag Saved" });
       pop();
-      return;
-    }
-    setTag([...tags, { name: values.name, color }]);
-    showToast({ title: "Tag Saved" });
-    pop();
-  };
+    },
+    validation: {
+      name: (value) => {
+        if (!value) {
+          return "Tag is required";
+        } else if (value.length > 100) {
+          return "Tag < 100 chars";
+        }
+      },
+    },
+  });
 
   return (
     <Form
@@ -37,8 +48,8 @@ const CreateTag = () => {
       }
     >
       <Form.Description text="New Tag" />
-      <Form.TextField id="name" title="Name" />
-      <Form.Dropdown id="color" title="Color" value={color} onChange={setColor}>
+      <Form.TextField title="Name" {...itemProps.name} />
+      <Form.Dropdown title="Color" {...itemProps.color} value={color} onChange={setColor}>
         {Object.values(colors).map((color, i) => (
           <Form.Dropdown.Item
             key={i}
