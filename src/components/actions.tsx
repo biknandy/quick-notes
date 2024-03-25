@@ -40,20 +40,20 @@ const Actions = ({
                 <CreateEditNoteForm isDraft={isDraft} title={title} note={note} tags={tags} createdAt={createdAt} />
               }
             />
+            <Action.Push
+              title="New Note"
+              icon={{
+                source: Icon.BlankDocument,
+                tintColor: colors.find((c) => c.name === "green")?.tintColor,
+              }}
+              target={<CreateEditNoteForm isDraft={true} />}
+              shortcut={{ modifiers: ["cmd"], key: "n" }}
+            />
             <DeleteNoteAction createdAt={createdAt} />
           </>
         )}
       </ActionPanel.Section>
       <ActionPanel.Section>
-        <Action.Push
-          title="New Note"
-          icon={{
-            source: Icon.BlankDocument,
-            tintColor: colors.find((c) => c.name === "green")?.tintColor,
-          }}
-          target={<CreateEditNoteForm isDraft={true} />}
-          shortcut={{ modifiers: ["cmd"], key: "n" }}
-        />
         <ActionPanel.Submenu
           title="Filter Tag"
           icon={{
