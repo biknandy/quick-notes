@@ -72,7 +72,11 @@ export const notesAtom = atom(
 
     // Write notes to file system if autosave is enabled
     if (preferences.fileLocation) {
-      await exportNotes(preferences.fileLocation, newNotes);
+      try {
+        await exportNotes(preferences.fileLocation, newNotes);
+      } catch (e) {
+        console.error(`Error exporting notes: ${e}`);
+      }
     }
   },
 );
