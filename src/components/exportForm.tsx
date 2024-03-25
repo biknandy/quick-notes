@@ -43,7 +43,7 @@ const ExportForm = () => {
         allowMultipleSelection={false}
         canChooseDirectories
         canChooseFiles={false}
-        info="Choose a file to export all your notes"
+        info="Choose a file to export all your notes once"
       />
     </Form>
   );
