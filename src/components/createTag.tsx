@@ -15,7 +15,7 @@ const CreateTag = () => {
   const { pop } = useNavigation();
   const [color, setColor] = useState(getRandomColor().name);
 
-  const { handleSubmit, itemProps, values } = useForm<TagForm>({
+  const { handleSubmit, itemProps } = useForm<TagForm>({
     async onSubmit(values) {
       // if tag already exists, don't do anything
       if (tags.find((tag) => tag.name === values.name)) {
