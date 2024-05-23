@@ -27,16 +27,6 @@ const ListItem = ({
             showMenu ? (
               <List.Item.Detail.Metadata>
                 <List.Item.Detail.Metadata.Label title={note.title} />
-                <List.Item.Detail.Metadata.Label
-                  title="Created At"
-                  text={format(note.createdAt, "MMMM d, yyyy '@' HH:mm")}
-                />
-
-                <List.Item.Detail.Metadata.Label
-                  title="Updated At"
-                  text={format(note.updatedAt, "MMMM d, yyyy '@' HH:mm")}
-                />
-
                 {note.tags.length > 0 && (
                   <List.Item.Detail.Metadata.TagList title="Tags">
                     {note.tags.map((tag, index) => (
@@ -48,6 +38,22 @@ const ListItem = ({
                     ))}
                   </List.Item.Detail.Metadata.TagList>
                 )}
+                <List.Item.Detail.Metadata.Label
+                  title="Word Count"
+                  text={`${
+                    note.body.split(" ").filter((n) => {
+                      return n != "";
+                    }).length ?? 0
+                  }`}
+                />
+                <List.Item.Detail.Metadata.Label
+                  title="Created At"
+                  text={format(note.createdAt, "MMMM d, yyyy '@' HH:mm")}
+                />
+                <List.Item.Detail.Metadata.Label
+                  title="Updated At"
+                  text={format(note.updatedAt, "MMMM d, yyyy '@' HH:mm")}
+                />
               </List.Item.Detail.Metadata>
             ) : undefined
           }
