@@ -129,7 +129,7 @@ const Actions = ({
           <Action
             title="All Notes"
             icon={{
-              source: Icon.AppWindowGrid2x2,
+              source: Icon.BulletPoints,
               tintColor: getTintColor("turquoise"),
             }}
             onAction={() => onTagFilter("")}
