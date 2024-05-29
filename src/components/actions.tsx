@@ -126,6 +126,14 @@ const Actions = ({
                 }}
               />
             ))}
+          <Action
+            title="All Notes"
+            icon={{
+              source: Icon.AppWindowGrid2x2,
+              tintColor: getTintColor("turquoise"),
+            }}
+            onAction={() => onTagFilter("")}
+          />
           <Action.Push title="Create" icon={Icon.Plus} target={<CreateTag />} />
         </ActionPanel.Submenu>
         <Action.Push
