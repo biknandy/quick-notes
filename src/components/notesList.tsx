@@ -4,7 +4,7 @@ import { useAtom } from "jotai";
 import { compareDesc, format } from "date-fns";
 import { notesAtom, Note, tagsAtom, Tag, Sort } from "../services/atoms";
 import Actions from "./actions";
-import { getTintColor } from "../utils/utils";
+import { countWords, getTintColor } from "../utils/utils";
 import { useCachedState } from "@raycast/utils";
 import slugify from "slugify";
 import { includes, pull, union } from "lodash";
@@ -43,14 +43,7 @@ const ListItem = ({
                     ))}
                   </List.Item.Detail.Metadata.TagList>
                 )}
-                <List.Item.Detail.Metadata.Label
-                  title="Word Count"
-                  text={`${
-                    note.body.split(" ").filter((n) => {
-                      return n != "";
-                    }).length ?? 0
-                  }`}
-                />
+                <List.Item.Detail.Metadata.Label title="Word Count" text={`${countWords(note.body) ?? 0}`} />
                 <List.Item.Detail.Metadata.Label
                   title="Created At"
                   text={format(note.createdAt, "MMMM d, yyyy '@' HH:mm")}
