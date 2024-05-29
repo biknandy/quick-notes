@@ -71,31 +71,6 @@ const Actions = ({
         {!noNotes && <DeleteNoteAction createdAt={createdAt} />}
       </ActionPanel.Section>
       <ActionPanel.Section>
-        <ActionPanel.Submenu
-          title="Filter Tag"
-          icon={{
-            source: Icon.Filter,
-            tintColor: getTintColor("turquoise"),
-          }}
-          shortcut={{ modifiers: ["ctrl"], key: "t" }}
-        >
-          {allTags &&
-            allTags.length > 0 &&
-            allTags.map((tag, i) => (
-              <Action
-                key={i}
-                icon={{
-                  source: "dot.png",
-                  tintColor: getTintColor(tag.color) ?? "blue",
-                }}
-                title={tag.name}
-                onAction={() => {
-                  onTagFilter(tag.name);
-                }}
-              />
-            ))}
-          <Action.Push title="Create" icon={Icon.Plus} target={<CreateTag />} />
-        </ActionPanel.Submenu>
         {allTags && allTags.length > 0 ? (
           <ActionPanel.Submenu
             title="Apply / Remove Tag"
@@ -129,6 +104,31 @@ const Actions = ({
           target={<CreateTag />}
           shortcut={{ modifiers: ["cmd", "shift"], key: "t" }}
         />
+        <ActionPanel.Submenu
+          title="Filter Tag"
+          icon={{
+            source: Icon.Filter,
+            tintColor: getTintColor("turquoise"),
+          }}
+          shortcut={{ modifiers: ["ctrl"], key: "t" }}
+        >
+          {allTags &&
+            allTags.length > 0 &&
+            allTags.map((tag, i) => (
+              <Action
+                key={i}
+                icon={{
+                  source: "dot.png",
+                  tintColor: getTintColor(tag.color) ?? "blue",
+                }}
+                title={tag.name}
+                onAction={() => {
+                  onTagFilter(tag.name);
+                }}
+              />
+            ))}
+          <Action.Push title="Create" icon={Icon.Plus} target={<CreateTag />} />
+        </ActionPanel.Submenu>
         <Action.Push
           title="Delete Tags"
           icon={{
