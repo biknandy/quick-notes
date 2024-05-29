@@ -7,7 +7,6 @@ import { Sort, sortArr, tagsAtom } from "../services/atoms";
 import { useAtom } from "jotai";
 import DeleteTags from "./deleteTags";
 import { useCachedState } from "@raycast/utils";
-import { difference } from "lodash";
 
 const Actions = ({
   noNotes,

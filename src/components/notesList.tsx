@@ -1,4 +1,4 @@
-import { Grid, List } from "@raycast/api";
+import { List } from "@raycast/api";
 import { useEffect, useState } from "react";
 import { useAtom } from "jotai";
 import { compareDesc, format } from "date-fns";
@@ -7,7 +7,7 @@ import Actions from "./actions";
 import { countWords, getTintColor } from "../utils/utils";
 import { useCachedState } from "@raycast/utils";
 import slugify from "slugify";
-import { includes, pull, union } from "lodash";
+import { includes, pull } from "lodash";
 
 const ListItem = ({
   note,
