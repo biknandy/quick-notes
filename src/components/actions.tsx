@@ -7,10 +7,12 @@ import { Sort, sortArr, tagsAtom } from "../services/atoms";
 import { useAtom } from "jotai";
 import DeleteTags from "./deleteTags";
 import { useCachedState } from "@raycast/utils";
+import { difference } from "lodash";
 
 const Actions = ({
   noNotes,
   onTagFilter,
+  onApplyTag,
   isDraft = false,
   title,
   note,
@@ -19,6 +21,7 @@ const Actions = ({
 }: {
   noNotes: boolean;
   onTagFilter: (tag: string) => void;
+  onApplyTag: (tag: string, noteBody?: string) => void;
   isDraft?: boolean;
   title?: string;
   note?: string;
@@ -74,7 +77,7 @@ const Actions = ({
             source: Icon.Filter,
             tintColor: getTintColor("turquoise"),
           }}
-          shortcut={{ modifiers: ["cmd", "shift"], key: "t" }}
+          shortcut={{ modifiers: ["ctrl"], key: "t" }}
         >
           {allTags &&
             allTags.length > 0 &&
@@ -93,14 +96,38 @@ const Actions = ({
             ))}
           <Action.Push title="Create" icon={Icon.Plus} target={<CreateTag />} />
         </ActionPanel.Submenu>
+        {allTags && allTags.length > 0 ? (
+          <ActionPanel.Submenu
+            title="Apply / Remove Tag"
+            icon={{
+              source: Icon.Tag,
+              tintColor: getTintColor("turquoise"),
+            }}
+            shortcut={{ modifiers: ["cmd"], key: "t" }}
+          >
+            {allTags.map((tag, i) => (
+              <Action
+                key={i}
+                icon={{
+                  source: "dot.png",
+                  tintColor: getTintColor(tag.color) ?? "blue",
+                }}
+                title={tag.name}
+                onAction={() => {
+                  onApplyTag(tag.name, note);
+                }}
+              />
+            ))}
+          </ActionPanel.Submenu>
+        ) : undefined}
         <Action.Push
           title="New Tag"
           icon={{
-            source: Icon.Tag,
+            source: Icon.PlusSquare,
             tintColor: getTintColor("turquoise"),
           }}
           target={<CreateTag />}
-          shortcut={{ modifiers: ["cmd"], key: "t" }}
+          shortcut={{ modifiers: ["cmd", "shift"], key: "t" }}
         />
         <Action.Push
           title="Delete Tags"
