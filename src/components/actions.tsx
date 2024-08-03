@@ -40,7 +40,6 @@ const Actions = ({
       note
         ? `Summarize the note here: ${note}. Be concise and informative. Avoid any conversational tone and DO NOT include the original text in the summary. The output will be displayed at the top of the note. Do NOT put any headings or titles in the summary, including something like "summary:".`
         : "",
-      { model: AI.Model.Anthropic_Claude_Opus },
     );
     answer.on("data", async (data) => {
       allData += data;
