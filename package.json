@@ -2,7 +2,7 @@
   "$schema": "https://www.raycast.com/schemas/extension.json",
   "name": "quick-notes",
   "title": "Quick Notes",
-  "description": "Create simple markdown notes in Raycast. No integrations required!",
+  "description": "Create simple markdown notes in Raycast and sync to a folder locally. No integrations required!",
   "icon": "icon.png",
   "author": "biknandy",
   "categories": [
@@ -16,6 +16,55 @@
       "title": "View Notes",
       "description": "Create, view, and manage your quick notes.",
       "mode": "view"
+    },
+    {
+      "name": "create",
+      "title": "Create Note",
+      "description": "Create a quick note.",
+      "mode": "view",
+      "arguments": [
+        {
+          "name": "title",
+          "placeholder": "Title",
+          "type": "text"
+        },
+        {
+          "name": "note",
+          "placeholder": "Note",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "tag",
+      "title": "Create Tag",
+      "description": "Create a new tag to categorize your notes.",
+      "mode": "view",
+      "arguments": [
+        {
+          "name": "tag",
+          "placeholder": "Tag",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "search",
+      "title": "Search Notes",
+      "description": "Search notes by title, body, or tag",
+      "mode": "view",
+      "arguments": [
+        {
+          "name": "text",
+          "placeholder": "Search",
+          "type": "text"
+        },
+        {
+          "name": "tag",
+          "placeholder": "Tag",
+          "type": "text"
+        }
+      ]
     },
     {
       "name": "export",
