@@ -43,7 +43,6 @@ const CreateEditNoteForm = ({
                 body: values.note,
                 tags: values.tags,
                 createdAt: n.createdAt,
-                summary: n.summary,
                 updatedAt: new Date(),
                 is_draft: false,
               }

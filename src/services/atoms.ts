@@ -1,5 +1,4 @@
 import { atom } from "jotai";
-import { atomWithReset, RESET } from "jotai/utils";
 import { TAGS_FILE_PATH, TODO_FILE_PATH, preferences } from "./config";
 import fs from "fs";
 import {
@@ -16,7 +15,6 @@ export interface Note {
   body: string;
   tags: string[];
   is_draft: boolean;
-  summary?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -30,14 +28,10 @@ export const sortArr = ["created", "updated", "alphabetical", "tags"] as const;
 
 export type Sort = (typeof sortArr)[number];
 
-const notes = atomWithReset<Note[]>(getInitialValuesFromFile(TODO_FILE_PATH) as Note[]);
+const notes = atom<Note[]>(getInitialValuesFromFile(TODO_FILE_PATH) as Note[]);
 export const notesAtom = atom(
   async (get) => get(notes),
-  async (get, set, newNotes: Note[] | typeof RESET) => {
-    if (newNotes === RESET) {
-      set(notes, getInitialValuesFromFile(TODO_FILE_PATH) as Note[]);
-      return;
-    }
+  async (get, set, newNotes: Note[]) => {
     /**
      * Autosave deletion logic
      * - If a note is renamed, delete the old note file as title is the filename
