@@ -17,6 +17,12 @@ const CreateTag = () => {
 
   const { handleSubmit, itemProps } = useForm<TagForm>({
     async onSubmit(values) {
+      // if tag already exists, don't do anything
+      if (tags.find((tag) => tag.name === values.name)) {
+        showToast({ title: "Tag Exists" });
+        pop();
+        return;
+      }
       setTag([...tags, { name: values.name, color }]);
       showToast({ title: "Tag Saved" });
       pop();
@@ -27,8 +33,6 @@ const CreateTag = () => {
           return "Tag is required";
         } else if (value.length > 100) {
           return "Tag < 100 chars";
-        } else if (tags.find((tag) => tag.name.toLocaleLowerCase() === value.toLocaleLowerCase())) {
-          return "Tag already exists";
         }
       },
     },

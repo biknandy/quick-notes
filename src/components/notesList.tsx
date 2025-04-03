@@ -22,28 +22,12 @@ const ListItem = ({
   onApplyTag: (tag: string, noteBody?: string) => void;
   showMenu?: boolean;
 }) => {
-  const generateBody = (note: Note) => {
-    if (note.summary) {
-      return `
-### Summary AI
-
-${note.summary ?? "No summary available."}
-
----
-
-${note.body}
-`;
-    } else {
-      return note.body;
-    }
-  };
-
   return (
     <List.Item
       title={note.title}
       detail={
         <List.Item.Detail
-          markdown={generateBody(note)}
+          markdown={note.body}
           metadata={
             showMenu ? (
               <List.Item.Detail.Metadata>
