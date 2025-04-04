@@ -59,7 +59,14 @@ const Actions = ({
           <>
             <Action.Push
               title="Edit Note"
+<<<<<<< HEAD
               icon={{ source: Icon.Pencil, tintColor: getTintColor("sky") }}
+=======
+              icon={{
+                source: Icon.Pencil,
+                tintColor: getTintColor("sky"),
+              }}
+>>>>>>> contributions/merge-1743785463483
               target={
                 <CreateEditNoteForm isDraft={isDraft} title={title} note={note} tags={tags} createdAt={createdAt} />
               }
@@ -78,7 +85,14 @@ const Actions = ({
         )}
         <Action.Push
           title="New Note"
+<<<<<<< HEAD
           icon={{ source: Icon.PlusSquare, tintColor: getTintColor("green") }}
+=======
+          icon={{
+            source: Icon.PlusSquare,
+            tintColor: getTintColor("green"),
+          }}
+>>>>>>> contributions/merge-1743785463483
           target={<CreateEditNoteForm isDraft={true} />}
           shortcut={{ modifiers: ["cmd"], key: "n" }}
         />
@@ -88,13 +102,27 @@ const Actions = ({
         <ActionPanel.Section>
           <Action
             title="Summarize with AI"
+<<<<<<< HEAD
             icon={{ source: Icon.SpeechBubbleActive, tintColor: getTintColor("sky") }}
+=======
+            icon={{
+              source: Icon.SpeechBubbleActive,
+              tintColor: getTintColor("sky"),
+            }}
+>>>>>>> contributions/merge-1743785463483
             onAction={async () => await askAI()}
             shortcut={{ modifiers: ["cmd"], key: "i" }}
           />
           <Action
             title="Clear AI Summary"
+<<<<<<< HEAD
             icon={{ source: Icon.MinusCircle, tintColor: getTintColor("sky") }}
+=======
+            icon={{
+              source: Icon.MinusCircle,
+              tintColor: getTintColor("sky"),
+            }}
+>>>>>>> contributions/merge-1743785463483
             onAction={() => {
               clearNoteSummary(createdAt);
               resetNotes();
@@ -107,13 +135,27 @@ const Actions = ({
         {allTags && allTags.length > 0 ? (
           <ActionPanel.Submenu
             title="Apply / Remove Tag"
+<<<<<<< HEAD
             icon={{ source: Icon.Tag, tintColor: getTintColor("turquoise") }}
+=======
+            icon={{
+              source: Icon.Tag,
+              tintColor: getTintColor("turquoise"),
+            }}
+>>>>>>> contributions/merge-1743785463483
             shortcut={{ modifiers: ["cmd"], key: "t" }}
           >
             {allTags.map((tag, i) => (
               <Action
                 key={i}
+<<<<<<< HEAD
                 icon={{ source: "dot.png", tintColor: getTintColor(tag.color) ?? "blue" }}
+=======
+                icon={{
+                  source: "dot.png",
+                  tintColor: getTintColor(tag.color) ?? "blue",
+                }}
+>>>>>>> contributions/merge-1743785463483
                 title={tag.name}
                 onAction={() => {
                   onApplyTag(tag.name, note);
@@ -124,13 +166,27 @@ const Actions = ({
         ) : undefined}
         <Action.Push
           title="New Tag"
+<<<<<<< HEAD
           icon={{ source: Icon.PlusSquare, tintColor: getTintColor("turquoise") }}
+=======
+          icon={{
+            source: Icon.PlusSquare,
+            tintColor: getTintColor("turquoise"),
+          }}
+>>>>>>> contributions/merge-1743785463483
           target={<CreateTag />}
           shortcut={{ modifiers: ["cmd", "shift"], key: "t" }}
         />
         <ActionPanel.Submenu
           title="Filter Tag"
+<<<<<<< HEAD
           icon={{ source: Icon.Filter, tintColor: getTintColor("turquoise") }}
+=======
+          icon={{
+            source: Icon.Filter,
+            tintColor: getTintColor("turquoise"),
+          }}
+>>>>>>> contributions/merge-1743785463483
           shortcut={{ modifiers: ["cmd"], key: "f" }}
         >
           {allTags &&
@@ -138,7 +194,14 @@ const Actions = ({
             allTags.map((tag, i) => (
               <Action
                 key={i}
+<<<<<<< HEAD
                 icon={{ source: "dot.png", tintColor: getTintColor(tag.color) ?? "blue" }}
+=======
+                icon={{
+                  source: "dot.png",
+                  tintColor: getTintColor(tag.color) ?? "blue",
+                }}
+>>>>>>> contributions/merge-1743785463483
                 title={tag.name}
                 onAction={() => {
                   onTagFilter(tag.name);
@@ -147,14 +210,28 @@ const Actions = ({
             ))}
           <Action
             title="All Notes"
+<<<<<<< HEAD
             icon={{ source: Icon.BulletPoints, tintColor: getTintColor("turquoise") }}
+=======
+            icon={{
+              source: Icon.BulletPoints,
+              tintColor: getTintColor("turquoise"),
+            }}
+>>>>>>> contributions/merge-1743785463483
             onAction={() => onTagFilter("")}
           />
           <Action.Push title="Create" icon={Icon.Plus} target={<CreateTag />} />
         </ActionPanel.Submenu>
         <Action.Push
           title="Delete Tags"
+<<<<<<< HEAD
           icon={{ source: Icon.Trash, tintColor: getTintColor("red") }}
+=======
+          icon={{
+            source: Icon.Trash,
+            tintColor: getTintColor("red"),
+          }}
+>>>>>>> contributions/merge-1743785463483
           target={<DeleteTags />}
           shortcut={{ modifiers: ["ctrl", "shift"], key: "t" }}
         />
@@ -162,19 +239,44 @@ const Actions = ({
       <ActionPanel.Section>
         <Action
           title="Toggle Menu"
+<<<<<<< HEAD
           icon={{ source: Icon.AppWindowSidebarRight, tintColor: getTintColor("indigo") }}
+=======
+          icon={{
+            source: Icon.AppWindowSidebarRight,
+            tintColor: getTintColor("indigo"),
+          }}
+>>>>>>> contributions/merge-1743785463483
           onAction={() => setMenu((prev) => !prev)}
           shortcut={{ modifiers: ["cmd"], key: "m" }}
         />
         <ActionPanel.Submenu
           title="Sort"
+<<<<<<< HEAD
           icon={{ source: Icon.Filter, tintColor: getTintColor("indigo") }}
+=======
+          icon={{
+            source: Icon.Filter,
+            tintColor: getTintColor("indigo"),
+          }}
+>>>>>>> contributions/merge-1743785463483
           shortcut={{ modifiers: ["cmd"], key: "s" }}
         >
           {sortArr.map((s, i) => (
             <Action
               key={i}
+<<<<<<< HEAD
               icon={s === sort ? { source: Icon.ArrowRightCircle, tintColor: "teal" } : undefined}
+=======
+              icon={
+                s === sort
+                  ? {
+                      source: Icon.ArrowRightCircle,
+                      tintColor: "teal",
+                    }
+                  : undefined
+              }
+>>>>>>> contributions/merge-1743785463483
               title={getSortHumanReadable(s)}
               onAction={() => setSort(s)}
             />

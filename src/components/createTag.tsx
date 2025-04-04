@@ -32,6 +32,8 @@ const CreateTag = ({ tag }: { tag?: string }) => {
           return "Tag is required";
         } else if (value.length > 100) {
           return "Tag < 100 chars";
+        } else if (tags.find((tag) => tag.name.toLocaleLowerCase() === value.toLocaleLowerCase())) {
+          return "Tag already exists";
         }
       },
     },

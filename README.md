@@ -30,6 +30,8 @@ If you’d like, you can export or auto-sync your notes as markdown to a directo
 - `^ + ⇧ + T` - Delete tags
 - `⌘ + M` - Toggle note metadata
 - `⌘ + S` - Sort notes
+- `⌘ + I` - Summarize note with AI
+- `⌘ + ⇧ + I` - Clear AI summary
 
 **Create Note**
 

@@ -43,6 +43,7 @@ const CreateEditNoteForm = ({
                 body: values.note,
                 tags: values.tags,
                 createdAt: n.createdAt,
+                summary: n.summary,
                 updatedAt: new Date(),
                 is_draft: false,
               }
@@ -81,7 +82,12 @@ const CreateEditNoteForm = ({
 
   // Keeps the dataRef.current in sync with the form values
   useEffect(() => {
-    dataRef.current = { ...dataRef.current, title: values.title, note: values.note, tags: values.tags };
+    dataRef.current = {
+      ...dataRef.current,
+      title: values.title,
+      note: values.note,
+      tags: values.tags,
+    };
   }, [values]);
 
   // This useEffect is a hack to autosave a draft on unmount when the form is not explicitly submitted by the user
