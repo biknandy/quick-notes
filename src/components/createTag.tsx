@@ -1,8 +1,9 @@
-import { Form, ActionPanel, Action, showToast, useNavigation, Icon, Color } from "@raycast/api";
+import { Form, ActionPanel, Action, showToast, useNavigation } from "@raycast/api";
 import { useAtom } from "jotai";
 import { tagsAtom } from "../services/atoms";
-import { colors, getRandomColor } from "../utils/utils";
+import { colors, getRandomColor, getTintColor } from "../utils/utils";
 import { useState } from "react";
+import { useForm } from "@raycast/utils";
 
 type TagForm = {
   name: string;
@@ -14,48 +15,55 @@ const CreateTag = () => {
   const { pop } = useNavigation();
   const [color, setColor] = useState(getRandomColor().name);
 
-  const handleSubmit = (values: TagForm) => {
-    // if tag already exists, don't do anything
-    if (tags.find((tag) => tag.name === values.name)) {
-      showToast({ title: "Tag Exists" });
+  const { handleSubmit, itemProps } = useForm<TagForm>({
+    async onSubmit(values) {
+      setTag([...tags, { name: values.name, color }]);
+      showToast({ title: "Tag Saved" });
       pop();
-      return;
-    }
-    setTag([...tags, { name: values.name, color }]);
-    showToast({ title: "Tag Saved" });
-    pop();
-  };
+    },
+    validation: {
+      name: (value) => {
+        if (!value) {
+          return "Tag is required";
+        } else if (value.length > 100) {
+          return "Tag < 100 chars";
+        } else if (tags.find((tag) => tag.name.toLocaleLowerCase() === value.toLocaleLowerCase())) {
+          return "Tag already exists";
+        }
+      },
+    },
+  });
 
   return (
     <Form
+      navigationTitle="Create Tag"
       actions={
         <ActionPanel>
           <Action.SubmitForm title="Create Tag" onSubmit={handleSubmit} />
         </ActionPanel>
       }
-      enableDrafts
     >
       <Form.Description text="New Tag" />
-      <Form.TextField id="name" title="Name" />
-      <Form.Dropdown id="color" title="Color" value={color} onChange={setColor}>
+      <Form.TextField title="Name" {...itemProps.name} />
+      <Form.Dropdown title="Color" {...itemProps.color} value={color} onChange={setColor}>
         {Object.values(colors).map((color, i) => (
           <Form.Dropdown.Item
             key={i}
             value={color.name}
             title={color.name}
-            icon={{ source: Icon.CircleFilled, tintColor: color.tintColor }}
+            icon={{ source: "dot.png", tintColor: color.tintColor }}
           />
         ))}
       </Form.Dropdown>
       <Form.Separator />
       <Form.Description text="Existing Tags" />
-      <Form.Dropdown id="tags" info="For referencing existing tags only" defaultValue="Select Tag">
+      <Form.Dropdown id="tags" info="For referencing existing tags only">
         {tags.map((t, i) => (
           <Form.Dropdown.Item
             key={i}
             value={t.name}
             title={t.name}
-            icon={{ source: Icon.CircleFilled, tintColor: colors.find((c) => c.name === t.color)?.tintColor }}
+            icon={{ source: "dot.png", tintColor: getTintColor(t.color) }}
           />
         ))}
       </Form.Dropdown>
