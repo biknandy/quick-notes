@@ -2,6 +2,7 @@ import { environment, showToast, trash } from "@raycast/api";
 import { Note, Sort, Tag } from "../services/atoms";
 import slugify from "slugify";
 import fs from "fs";
+import path from "path";
 import { TODO_FILE_PATH } from "../services/config";
 import { marked } from "marked";
 import striptags from "striptags";
@@ -54,13 +55,13 @@ export const getSyncWithDirectory = async (dirPath?: string): Promise<Note[]> =>
 
         // add markdown files to Notes
         const filePromises = markdownFiles.map((file) => {
-          const notePath = `${dirPath}/${file}`;
+          const notePath = path.join(dirPath, file);
           return new Promise<Note>((resolve, reject) => {
             fs.readFile(notePath, (err: NodeJS.ErrnoException | null, data: Buffer) => {
               if (err) {
                 reject(`Error reading file: ${file}`);
               } else {
-                const fileTitle = file.replace(/\.md$/, "");
+                const fileTitle = path.basename(file, ".md");
                 const parsed = parseMarkdownNote(data.toString());
 
                 // if it's an existing note, only update the body (and tags if the file has frontmatter)
@@ -113,7 +114,7 @@ export const exportNotes = async (filePath: string, notes: Note[]) => {
 
   await Promise.all(
     notes.map(async (note) => {
-      const notePath = `${filePath}/${slugify(note.title)}.md`;
+      const notePath = path.join(filePath, `${slugify(note.title)}.md`);
       await fs.promises.writeFile(notePath, serializeNoteToMarkdown(note));
     }),
   );
@@ -124,7 +125,9 @@ export const deleteNotesInFolder = async (dirPath: string, filenames: string[]):
     return Promise.reject(`Invalid Folder: ${dirPath}`);
   }
   // Only trash files that exist; notes may never have been saved to the folder
-  const filePaths = filenames.map((file) => `${dirPath}/${slugify(file)}.md`).filter((path) => fs.existsSync(path));
+  const filePaths = filenames
+    .map((file) => path.join(dirPath, `${slugify(file)}.md`))
+    .filter((filePath) => fs.existsSync(filePath));
   if (filePaths.length > 0) {
     await trash(filePaths);
   }
