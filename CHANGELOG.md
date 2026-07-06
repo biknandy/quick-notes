@@ -1,6 +1,29 @@
 # Quick Notes Changelog
 
-## [New Commands] - {PR_MERGE_DATE}
+## [YAML Frontmatter] - {PR_MERGE_DATE}
+
+- Notes saved or exported as markdown now include YAML frontmatter (`title`, `date`, `tags`) and an H1 title, ready for GitHub Pages / Jekyll blogs and Obsidian
+- `Sync with Folder` understands frontmatter: title, tags, and created date are read from it and it's kept out of your note body in Raycast
+- `Sync with Folder` rewrites files in your folder so existing notes pick up frontmatter automatically
+- Tags found in synced files' frontmatter are added to your tag list
+- Syncing no longer removes notes that haven't been saved to the folder yet
+- Fix sync errors being silently swallowed instead of showing a toast
+- Fix renaming a note logging an error when the old file was never saved to the folder
+- Fix `Open Note Externally` opening a bogus path when no auto save location is set
+
+## [Windows Compatibility] - 2025-12-10
+
+- Normalize path handling with `path.join` so Quick Notes works on macOS and Windows Raycast.
+
+## [Bugfix] - 2025-08-04
+
+- Fix note opening externally if note title contains space
+
+## [New Command] - 2025-06-26
+
+- Open Note Externally
+
+## [New Commands] - 2025-04-08
 
 - 3 new commands to use outside of `View Notes`: `Create Note`, `Create Tag`, `Search Notes`
 - Can now use these commands to intake note from clipboard, selected text, etc. using Raycast Quicklinks
