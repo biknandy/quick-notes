@@ -1,6 +1,11 @@
 # Quick Notes Changelog
 
-## [YAML Frontmatter] - {PR_MERGE_DATE}
+## [Clear Errors for Open Note Externally] - {PR_MERGE_DATE}
+
+- `Open Note Externally` now shows a clear error toast instead of a cryptic macOS "-50" dialog when the auto save folder is unset, missing on disk, or the note's markdown file doesn't exist
+- Error toasts for a missing or unset auto save location include a shortcut to open the extension settings
+
+## [YAML Frontmatter] - 2026-07-06
 
 - Notes saved or exported as markdown now include YAML frontmatter (`title`, `date`, `tags`) and an H1 title, ready for GitHub Pages / Jekyll blogs and Obsidian
 - `Sync with Folder` understands frontmatter: title, tags, and created date are read from it and it's kept out of your note body in Raycast
